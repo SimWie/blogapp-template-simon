@@ -1,52 +1,55 @@
-name: Azure Static Web Apps CI/CD
+name: Deploy to Azure Storage
+
+# Static-Website-Hosting auf einem Azure Storage Account ($web-Container).
+# Build-Output liegt in dist/app/browser (siehe angular.json -> outputPath: "dist/app").
+
 permissions:
   contents: read
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  NODE_VERSION: 20.19.1
+  BUILD_OUTPUT: dist/app/browser
 
 jobs:
-  build_and_deploy_job:
-    if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'pull_request' && github.event.action != 'closed')
+  build-and-deploy:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-
-    env:
-      NODE_VERSION: 20.19.1
-
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
-          lfs: false
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "/"
-          api_location: ""
-          output_location: "dist/app/browser"
 
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          app_location: "/"
-          action: "close"
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Upload to Azure Storage ($web)
+        uses: azure/CLI@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            set -euo pipefail
+
+            # Stale Dateien entfernen (gehashte JS/CSS-Bundles vom letzten Deploy),
+            # damit der $web-Container exakt dem aktuellen Build entspricht.
+            az storage blob delete-batch \
+              --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+              --account-key "${{ secrets.STORAGE_ACCOUNT_KEY }}" \
+              --source '$web'
+
+            az storage blob upload-batch \
+              --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+              --account-key "${{ secrets.STORAGE_ACCOUNT_KEY }}" \
+              --source "${{ env.BUILD_OUTPUT }}" \
+              --destination '$web' \
+              --overwrite
