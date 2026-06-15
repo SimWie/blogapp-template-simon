@@ -1,0 +1,20 @@
+<mat-card>
+  @if (blog().headerImageUrl) {
+    <img mat-card-image [src]="blog().headerImageUrl" [alt]="blog().title" />
+  }
+  <mat-card-header>
+    <mat-card-title>{{ blog().title }}</mat-card-title>
+    <mat-card-subtitle>{{ blog().author }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ blog().contentPreview }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-icon-button (click)="onLike()" aria-label="Like">
+      <mat-icon>{{ blog().likedByMe ? 'favorite' : 'favorite_border' }}</mat-icon>
+    </button>
+    <span>{{ blog().likes }}</span>
+    <mat-icon>comment</mat-icon>
+    <span>{{ blog().comments }}</span>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,9 @@
+<div class="blog-overview">
+  <h1>Blog-Übersicht</h1>
+
+  @for (blog of blogs(); track blog.id) {
+    <app-blog-card [blog]="blog" (liked)="onLike($event)" />
+  } @empty {
+    <p>Keine Blog-Posts vorhanden.</p>
+  }
+</div>
