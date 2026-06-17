@@ -1,4 +1,4 @@
-export type Blog = {
+export interface Blog {
   id: number;
   title: string;
   contentPreview: string;
@@ -10,4 +10,4 @@ export type Blog = {
   headerImageUrl?: string;
   createdAt: string;
   updatedAt: string;
-};
+}
