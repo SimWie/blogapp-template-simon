@@ -17,7 +17,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run start',
+    command: process.env['CI'] ? 'npm run serve:e2e' : 'npm run start',
     url: 'http://localhost:4200',
     reuseExistingServer: !process.env['CI'],
   },

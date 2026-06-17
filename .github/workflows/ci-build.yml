@@ -10,16 +10,20 @@ on:
     branches: ["main"]
 
 env:
-  NODE_VERSION: 24
+  NODE_VERSION: 22
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    # Browsers + system deps are prebaked into this image, so there is no
+    # `playwright install` step (the part that was hanging). Keep this tag in
+    # sync with the @playwright/test version in package.json.
+    container: mcr.microsoft.com/playwright:v1.58.2-noble
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -32,23 +36,66 @@ jobs:
       - name: Unit Tests
         run: npm run test:ci
 
+      - name: Coverage summary
+        # Render the coverage totals as a table in the run's job summary page —
+        # always visible (even on failure), like Vitest's own console output.
+        if: ${{ !cancelled() }}
+        run: |
+          node -e '
+            const fs = require("fs");
+            const p = "coverage/blogapp-template/coverage-summary.json";
+            if (!fs.existsSync(p)) { console.log("No coverage summary found at " + p); process.exit(0); }
+            const t = JSON.parse(fs.readFileSync(p, "utf8")).total;
+            const row = (label) => { const m = t[label.toLowerCase()]; return `| ${label} | ${m.pct}% | ${m.covered}/${m.total} |`; };
+            const md = [
+              "## Coverage summary",
+              "",
+              "| Metric | % | Covered/Total |",
+              "| --- | --- | --- |",
+              row("Statements"),
+              row("Branches"),
+              row("Functions"),
+              row("Lines"),
+              "",
+            ].join("\n");
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
+          '
+
       - name: Build
         run: npm run build
 
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ hashFiles('package-lock.json') }}
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-
-      - name: Install Playwright system deps (cached)
-        run: npx playwright install-deps chromium
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-
       - name: E2E Tests
         run: npm run e2e
+
+  # Fallow runs in its own job on a plain runner (no container). The action is
+  # a composite action that references files via ${{ github.action_path }}; in a
+  # container job that host path isn't visible inside the container, which makes
+  # its install step fail with exit 127. A normal runner avoids that, and Fallow
+  # (static analysis) has no need for the Playwright browser image anyway.
+  fallow:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v6
+        # Full history so Fallow's auto-changed-since can diff against the PR
+        # base SHA; a shallow checkout would break that "changed files" scoping.
+        with:
+          fetch-depth: 0
+
+      - name: Fallow analysis
+        uses: fallow-rs/fallow@v2.89.0
+        with:
+          format: sarif
+          # Report findings (surfaced in Code Scanning) without failing CI.
+          fail-on-issues: false
+
+      - name: Upload Fallow results to Code Scanning
+        # Fork PRs only get a read-only token (no security-events: write), so the
+        # upload would fail. Skip it for forks; still runs on push and same-repo PRs.
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: fallow-results.sarif

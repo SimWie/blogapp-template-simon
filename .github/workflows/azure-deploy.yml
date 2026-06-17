@@ -12,17 +12,17 @@ on:
   workflow_dispatch: {}
 
 env:
-  NODE_VERSION: 24
+  NODE_VERSION: 26
   BUILD_OUTPUT: dist/app/browser
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
@@ -34,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: Upload to Azure Storage ($web)
-        uses: azure/CLI@v2
+        uses: azure/CLI@v3
         with:
           azcliversion: latest
           inlineScript: |
