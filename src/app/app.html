@@ -1,17 +1,19 @@
 <mat-toolbar color="primary">
-  <span>{{ title }}</span>
-  <span class="spacer"></span>
+  <mat-toolbar-row>
+    <span>{{ title }}</span>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <a
+      mat-button
+      routerLink="/"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
+    <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
+  </mat-toolbar-row>
 </mat-toolbar>
-<mat-toolbar>
-  <a
-    mat-button
-    routerLink="/"
-    routerLinkActive="active-link"
-    [routerLinkActiveOptions]="{ exact: true }"
-    >Home</a
-  >
-  <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
-</mat-toolbar>
+
 <main class="content">
   <router-outlet />
 </main>
