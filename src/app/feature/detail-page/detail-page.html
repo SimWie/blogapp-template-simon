@@ -1,0 +1,15 @@
+@if (blog(); as b) {
+  <div class="detail-page">
+    @if (b.headerImageUrl) {
+      <img class="header-image" [src]="b.headerImageUrl" [alt]="b.title" />
+    }
+
+    <div class="detail-content">
+      <h1>{{ b.title }}</h1>
+      <p class="meta">{{ b.author }} &middot; {{ b.createdAt | date: 'dd.MM.yyyy' }}</p>
+      <p>{{ b.contentPreview }}</p>
+    </div>
+  </div>
+} @else {
+  <p>Blog-Post nicht gefunden.</p>
+}
