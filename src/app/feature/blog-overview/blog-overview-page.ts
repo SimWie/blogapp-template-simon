@@ -1,7 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { Blog } from '../../data/blog.model';
 import { BlogCard } from '../../shared/blog-card/blog-card';
-import blogData from '../../data/blogs.json';
+import { BlogService } from '../../shared/blog-service/blog-service';
 
 @Component({
   selector: 'app-blog-overview-page',
@@ -10,7 +10,9 @@ import blogData from '../../data/blogs.json';
   styleUrl: './blog-overview-page.scss',
 })
 export class BlogOverviewPage {
-  blogs = signal<Blog[]>(blogData as Blog[]);
+  private blogService = inject(BlogService);
+
+  blogs = signal<Blog[]>(this.blogService.getAll());
 
   onLike(blogId: number): void {
     this.blogs.update((blogs) =>
