@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card [routerLink]="['/blog', blog().id]" style="cursor: pointer">
   @if (blog().headerImageUrl) {
     <img mat-card-image [src]="blog().headerImageUrl" [alt]="blog().title" />
   }
@@ -10,7 +10,7 @@
     <p>{{ blog().contentPreview }}</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-icon-button (click)="onLike()" aria-label="Like">
+    <button mat-icon-button (click)="onLike(); $event.stopPropagation()">
       <mat-icon>{{ blog().likedByMe ? 'favorite' : 'favorite_border' }}</mat-icon>
     </button>
     <span>{{ blog().likes }}</span>

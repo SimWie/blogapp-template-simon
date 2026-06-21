@@ -1,4 +1,5 @@
 import { Component, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,7 +7,7 @@ import { Blog } from '../../data/blog.model';
 
 @Component({
   selector: 'app-blog-card',
-  imports: [MatCardModule, MatButtonModule, MatIconModule],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './blog-card.html',
   styleUrl: './blog-card.scss',
 })
