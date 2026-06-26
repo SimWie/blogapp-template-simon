@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Blog } from '../../data/blog.model';
+import { Blog } from '../blog-card/blog.model';
 import blogData from '../../data/blogs.json';
 
 @Injectable({
