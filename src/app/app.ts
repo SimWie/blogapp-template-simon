@@ -32,9 +32,8 @@ export class App implements OnInit {
     const savedTheme = localStorage.getItem('theme');
     const savedDark = localStorage.getItem('darkMode');
 
-    if (savedTheme) {
-      this.setTheme(savedTheme);
-    }
+    // Immer ein Theme setzen – gespeichertes oder Standard (blau)
+    this.setTheme(savedTheme ?? 'blue');
 
     if (savedDark !== null) {
       // Explizite Nutzer-Einstellung hat Vorrang
