@@ -11,6 +11,20 @@
       >Home</a
     >
     <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
+    <button mat-icon-button [matMenuTriggerFor]="themeMenu">
+      <mat-icon>palette</mat-icon>
+    </button>
+
+    <mat-menu #themeMenu="matMenu">
+      <button mat-menu-item (click)="setTheme('blue')">Blau</button>
+      <button mat-menu-item (click)="setTheme('green')">Grün</button>
+      <button mat-menu-item (click)="setTheme('violet')">Violett</button>
+      <mat-divider />
+      <button mat-menu-item (click)="toggleDark()">
+        <mat-icon>{{ isDark ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        {{ isDark ? 'Light Mode' : 'Dark Mode' }}
+      </button>
+    </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>
 

@@ -1,0 +1,42 @@
+// ── Mixins ──────────────────────────────────────
+
+// Flex-Center: Inhalt horizontal und vertikal zentrieren
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex-Row: horizontale Reihe mit optionalem Gap
+@mixin flex-row($gap: 8px) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+// Card-Shadow: Schatten + Hover-Lift-Effekt
+@mixin card-hover {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Responsive-Grid: Cards als Grid
+@mixin responsive-grid($min-width: 280px) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  gap: 24px;
+}
+
+// Visually truncate text nach N Zeilen
+@mixin line-clamp($lines: 3) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

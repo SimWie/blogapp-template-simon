@@ -1,0 +1,21 @@
+// ── Spacing-System ──────────────────────────────
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// ── Layout ──────────────────────────────────────
+$content-max-width: 900px;
+$card-border-radius: 12px;
+$image-height: 200px;
+
+// ── Typografie ──────────────────────────────────
+$font-family: Roboto, 'Helvetica Neue', sans-serif;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.25rem;
+
+// ── Transition ──────────────────────────────────
+$transition-default: 200ms ease;
