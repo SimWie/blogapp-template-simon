@@ -1,48 +1,24 @@
-.spacer {
-  flex: 1 1 auto;
-}
+@use 'variables' as vars;
+@use 'mixins' as mx;
 
+// ── Layout ──────────────────────────────────────
 .content {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  max-width: vars.$content-max-width;
+  margin: vars.$spacing-xl auto;
+  padding: 0 vars.$spacing-md;
 }
 
-.welcome-card {
-  h1 {
-    margin-top: 0;
+// ── Toolbar ──────────────────────────────────────
+mat-toolbar {
+  mat-toolbar-row:first-child {
+    font-size: vars.$font-size-lg;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
+}
 
-  code {
-    background: rgba(0, 0, 0, 0.06);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-
-  .active-link {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-  }
-
-  pre {
-    background: rgba(0, 0, 0, 0.06);
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
-
-    code {
-      background: none;
-      padding: 0;
-    }
-  }
-
-  ol,
-  ul {
-    line-height: 1.8;
-  }
-
-  a {
-    color: var(--mat-sys-primary);
-  }
+// ── Navigation ──────────────────────────────────
+.active-link {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 4px;
 }

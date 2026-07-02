@@ -1,15 +1,45 @@
+@use 'variables' as vars;
+@use 'mixins' as mx;
+
 mat-card {
-  margin-bottom: 1rem;
+  border-radius: vars.$card-border-radius;
+  overflow: hidden;
+  cursor: pointer;
+
+  @include mx.card-hover;
 
   img[mat-card-image] {
     width: 100%;
-    height: 200px;
+    height: vars.$image-height;
     object-fit: cover;
+    margin: 0; // mat-card-image hat default-margin, überschreiben
+  }
+
+  mat-card-header {
+    padding: vars.$spacing-md vars.$spacing-md vars.$spacing-sm;
+  }
+
+  mat-card-content {
+    padding: 0 vars.$spacing-md;
+    color: var(--mat-sys-on-surface-variant);
+
+    p {
+      @include mx.line-clamp(3);
+      margin: 0;
+      font-size: vars.$font-size-sm;
+    }
   }
 
   mat-card-actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    @include mx.flex-row(vars.$spacing-xs);
+    padding: vars.$spacing-sm vars.$spacing-md;
+    color: var(--mat-sys-on-surface-variant);
+    font-size: vars.$font-size-sm;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
   }
 }

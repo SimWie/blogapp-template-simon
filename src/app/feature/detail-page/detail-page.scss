@@ -1,27 +1,40 @@
+@use 'variables' as vars;
+@use 'mixins' as mx;
+
 .detail-page {
+  max-width: 700px;
+  margin: 0 auto;
+
   .header-image {
     width: 100%;
-    max-height: 300px;
+    max-height: 320px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
+    border-radius: vars.$card-border-radius;
+    margin-bottom: vars.$spacing-lg;
   }
 
   .detail-content {
     h1 {
       margin-top: 0;
+      color: var(--mat-sys-on-surface);
     }
 
     .meta {
-      color: gray;
-      margin-bottom: 1.5rem;
+      color: var(--mat-sys-on-surface-variant);
+      font-size: vars.$font-size-sm;
+      margin-bottom: vars.$spacing-lg;
+    }
+
+    p {
+      line-height: 1.7;
+      color: var(--mat-sys-on-surface);
     }
 
     .actions {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 1.5rem;
+      @include mx.flex-row(vars.$spacing-xs);
+      margin-top: vars.$spacing-lg;
+      padding-top: vars.$spacing-md;
+      border-top: 1px solid var(--mat-sys-outline-variant);
     }
   }
 }
