@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const blogSchema = z.object({
+const blogSchema = z.object({
   id: z.number(),
   title: z.string(),
   contentPreview: z.string(),
