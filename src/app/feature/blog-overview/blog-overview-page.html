@@ -1,11 +1,15 @@
 <div class="blog-overview">
   <h1>Blog-Übersicht</h1>
 
-  <div class="cards-grid">
-    @for (blog of blogs(); track blog.id) {
-      <app-blog-card [blog]="blog" (liked)="onLike($event)" />
-    } @empty {
-      <p>Keine Blog-Posts vorhanden.</p>
-    }
-  </div>
+  @if (loading()) {
+    <p class="loading">Laden...</p>
+  } @else {
+    <div class="cards-grid">
+      @for (blog of blogs(); track blog.id) {
+        <app-blog-card [blog]="blog" (liked)="onLike($event)" />
+      } @empty {
+        <p>Keine Blog-Posts vorhanden.</p>
+      }
+    </div>
+  }
 </div>
