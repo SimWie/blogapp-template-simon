@@ -3,6 +3,7 @@ import { Blog, BlogContent, blogListSchema } from '../blog-card/blog.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { firstValueFrom } from 'rxjs';
+import { safeParse } from 'zod/mini';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class BlogService {
   async getAll(): Promise<Blog[]> {
     try {
       const response = await firstValueFrom(this.httpClient.get<BlogContent>(this.apiUrl));
-      const result = blogListSchema.safeParse(response.data);
+      const result = safeParse(blogListSchema, response.data);
 
       if (!result.success) {
         console.error('Ungültige Blog-Daten vom Backend:', result.error);

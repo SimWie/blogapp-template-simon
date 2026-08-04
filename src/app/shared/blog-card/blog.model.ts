@@ -1,4 +1,6 @@
-import { z } from 'zod';
+// zod/mini statt zod: gleiche Validierung, aber ohne die chainable "classic"
+// API -- deutlich kleiner im Production-Bundle (siehe Angular-Budget).
+import * as z from 'zod/mini';
 
 const blogSchema = z.object({
   id: z.number(),
@@ -9,7 +11,7 @@ const blogSchema = z.object({
   comments: z.number(),
   likedByMe: z.boolean(),
   createdByMe: z.boolean(),
-  headerImageUrl: z.string().optional(),
+  headerImageUrl: z.optional(z.string()),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
