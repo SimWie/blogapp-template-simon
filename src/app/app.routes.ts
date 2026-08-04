@@ -4,8 +4,8 @@ import { BlogOverviewPage } from './feature/blog-overview/blog-overview-page';
 import { BlogService } from './shared/blog-service/blog-service';
 import { Blog } from './shared/blog-card/blog.model';
 
-const blogResolver: ResolveFn<Blog | undefined> = (route) => {
-  return inject(BlogService).getBlogByID(Number(route.paramMap.get('id')));
+const blogResolver: ResolveFn<Blog> = (route) => {
+  return inject(BlogService).getByID(Number(route.paramMap.get('id')));
 };
 
 export const routes: Routes = [

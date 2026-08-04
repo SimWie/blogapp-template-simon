@@ -91,6 +91,7 @@ jobs:
           format: sarif
           # Report findings (surfaced in Code Scanning) without failing CI.
           fail-on-issues: false
+          version: "2.89.0"
 
       - name: Upload Fallow results to Code Scanning
         # Fork PRs only get a read-only token (no security-events: write), so the
