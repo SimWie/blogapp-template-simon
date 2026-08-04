@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://myblogapp2026ws.z36.web.core.windows.net/api/',
+  apiUrl: 'https://d-cap-blog-backend---v2.whitepond-b96fee4b.westeurope.azurecontainerapps.io/',
 };
