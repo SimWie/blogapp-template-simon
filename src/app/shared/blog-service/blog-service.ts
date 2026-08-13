@@ -12,21 +12,21 @@ export class BlogService {
   private httpClient = inject(HttpClient);
   private apiUrl = environment.apiUrl + 'entries';
 
+  /**
+   * Lädt alle Blogs vom Backend. Wirft bei einem HTTP-Fehler oder bei
+   * ungültigen Daten -- den Error-State fürs UI baut der BlogStateService,
+   * der diese Methode in seiner loadBlogs()-Action aufruft.
+   */
   async getAll(): Promise<Blog[]> {
-    try {
-      const response = await firstValueFrom(this.httpClient.get<BlogContent>(this.apiUrl));
-      const result = safeParse(blogListSchema, response.data);
+    const response = await firstValueFrom(this.httpClient.get<BlogContent>(this.apiUrl));
+    const result = safeParse(blogListSchema, response.data);
 
-      if (!result.success) {
-        console.error('Ungültige Blog-Daten vom Backend:', result.error);
-        return [];
-      }
-
-      return result.data;
-    } catch (error) {
-      console.error('Fehler beim Laden der Blogs:', error);
-      return [];
+    if (!result.success) {
+      console.error('Ungültige Blog-Daten vom Backend:', result.error);
+      throw new Error('Die Blog-Daten vom Backend entsprechen nicht dem erwarteten Format.');
     }
+
+    return result.data;
   }
 
   async getByID(id: number): Promise<Blog> {
