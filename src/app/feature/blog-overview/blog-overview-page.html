@@ -1,11 +1,29 @@
 <div class="blog-overview">
   <h1>Blog-Übersicht</h1>
 
-  @if (loading()) {
+  <div class="toolbar">
+    <label for="author-filter">Autor</label>
+    <select
+      id="author-filter"
+      [value]="state.selectedAuthor()"
+      (change)="onAuthorChange($any($event.target).value)"
+    >
+      <option value="all">Alle</option>
+      @for (author of state.authors(); track author) {
+        <option [value]="author">{{ author }}</option>
+      }
+    </select>
+
+    <span class="count">{{ state.blogCount() }} Blog(s)</span>
+  </div>
+
+  @if (state.loading()) {
     <p class="loading">Laden...</p>
+  } @else if (state.error()) {
+    <p class="error">{{ state.error() }}</p>
   } @else {
     <div class="cards-grid">
-      @for (blog of blogs(); track blog.id) {
+      @for (blog of state.filteredBlogs(); track blog.id) {
         <app-blog-card [blog]="blog" (liked)="onLike($event)" />
       } @empty {
         <p>Keine Blog-Posts vorhanden.</p>

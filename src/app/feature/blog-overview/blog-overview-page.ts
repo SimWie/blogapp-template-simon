@@ -1,7 +1,6 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
-import { Blog } from '../../shared/blog-card/blog.model';
+import { Component, OnInit, inject } from '@angular/core';
 import { BlogCard } from '../../shared/blog-card/blog-card';
-import { BlogService } from '../../shared/blog-service/blog-service';
+import { BlogStateService } from '../../shared/blog-state/blog-state';
 
 @Component({
   selector: 'app-blog-overview-page',
@@ -10,39 +9,17 @@ import { BlogService } from '../../shared/blog-service/blog-service';
   styleUrl: './blog-overview-page.scss',
 })
 export class BlogOverviewPage implements OnInit {
-  private blogService = inject(BlogService);
+  protected readonly state = inject(BlogStateService);
 
-  blogs = signal<Blog[]>([]);
-  loading = signal(false);
-
-  async ngOnInit(): Promise<void> {
-    this.loading.set(true);
-    try {
-      this.blogs.set(await this.blogService.getAll());
-    } finally {
-      this.loading.set(false);
-    }
+  ngOnInit(): void {
+    void this.state.loadBlogs();
   }
 
-  async onLike(blogId: number): Promise<void> {
-    const blog = this.blogs().find((b) => b.id === blogId);
-    if (!blog) {
-      return;
-    }
+  onLike(blogId: number): void {
+    void this.state.toggleLike(blogId);
+  }
 
-    const updated: Blog = {
-      ...blog,
-      likedByMe: !blog.likedByMe,
-      likes: blog.likedByMe ? blog.likes - 1 : blog.likes + 1,
-    };
-
-    // Optimistic update, damit der Klick sofort sichtbar ist.
-    this.blogs.set(this.blogs().map((b) => (b.id === blogId ? updated : b)));
-
-    const result = await this.blogService.updateBlog(blogId, updated);
-    if (!result) {
-      // Backend-Call fehlgeschlagen -- Änderung zurückrollen.
-      this.blogs.set(this.blogs().map((b) => (b.id === blogId ? blog : b)));
-    }
+  onAuthorChange(author: string): void {
+    this.state.setAuthor(author);
   }
 }
