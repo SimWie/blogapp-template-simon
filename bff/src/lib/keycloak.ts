@@ -25,7 +25,7 @@ function endSessionEndpoint(): string {
  * entsprechen (z.B. http://localhost:4200/api/auth/callback -- dank
  * proxy.conf.json dieselbe Origin wie das Frontend, nicht die BFF-eigene).
  */
-export function redirectUri(): string {
+function redirectUri(): string {
   return `${ALLOWED_ORIGIN}/api/auth/callback`;
 }
 

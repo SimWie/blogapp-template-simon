@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export interface UserInfo {
+interface UserInfo {
   preferred_username: string;
   email: string;
   name: string;
