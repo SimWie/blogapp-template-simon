@@ -1,0 +1,12 @@
+@use 'variables' as vars;
+
+.add-blog-page {
+  max-width: vars.$content-max-width;
+  margin: vars.$spacing-xl auto;
+  padding: 0 vars.$spacing-md;
+
+  h1 {
+    color: var(--mat-sys-primary);
+    margin-bottom: vars.$spacing-lg;
+  }
+}
