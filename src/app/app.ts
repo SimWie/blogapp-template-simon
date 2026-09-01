@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
+import { AuthStore } from './core/auth-store';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { MatDivider } from '@angular/material/divider';
 })
 export class App implements OnInit {
   protected readonly title = 'HFTM Web Applications (IN353)';
+  protected readonly authStore = inject(AuthStore);
 
   isDark = false;
   currentTheme = 'blue';

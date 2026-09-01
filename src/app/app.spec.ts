@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { App } from './app';
 import { routes } from './app.routes';
 
@@ -7,7 +8,9 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes)],
+      // provideHttpClient(): App injiziert jetzt AuthStore, dessen
+      // Konstruktor sofort checkSession() (einen HTTP-Call) auslöst.
+      providers: [provideRouter(routes), provideHttpClient()],
     }).compileComponents();
   });
 

@@ -1,0 +1,11 @@
+<div class="login-page">
+  <h1>Anmelden</h1>
+
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  <p>Die Anmeldung läuft über Keycloak -- kein Passwort in dieser App.</p>
+
+  <button mat-raised-button color="primary" (click)="onLoginClick()">Mit Keycloak anmelden</button>
+</div>
