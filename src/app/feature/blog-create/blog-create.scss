@@ -1,0 +1,55 @@
+@use 'variables' as vars;
+
+.blog-create {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-lg;
+
+  .success {
+    color: var(--mat-sys-primary);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-xs;
+
+    label {
+      font-size: vars.$font-size-sm;
+      font-weight: 500;
+      color: var(--mat-sys-on-surface-variant);
+    }
+
+    input,
+    textarea,
+    select {
+      font-family: vars.$font-family;
+      font-size: vars.$font-size-base;
+      padding: vars.$spacing-sm;
+      border: 1px solid var(--mat-sys-outline-variant);
+      border-radius: 4px;
+      background: var(--mat-sys-surface);
+      color: var(--mat-sys-on-surface);
+
+      &:focus {
+        outline: 2px solid var(--mat-sys-primary);
+        outline-offset: -1px;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+    }
+  }
+
+  .errors {
+    margin: 0;
+    padding-left: vars.$spacing-md;
+    color: var(--mat-sys-error);
+    font-size: vars.$font-size-sm;
+  }
+
+  button {
+    align-self: flex-start;
+  }
+}

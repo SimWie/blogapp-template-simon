@@ -1,0 +1,49 @@
+<form class="blog-create" (submit)="onSubmit($event)">
+  @if (submitted()) {
+    <p class="success">Blog-Beitrag wurde abgesendet (siehe Konsole).</p>
+  }
+
+  <div class="field">
+    <label for="title">Titel</label>
+    <input id="title" type="text" [formField]="blogForm.title" />
+    @if (blogForm.title().touched() && blogForm.title().invalid()) {
+      <ul class="errors">
+        @for (error of blogForm.title().errors(); track error.kind) {
+          <li>{{ error.message }}</li>
+        }
+      </ul>
+    }
+  </div>
+
+  <div class="field">
+    <label for="content">Inhalt</label>
+    <textarea id="content" rows="6" [formField]="blogForm.content"></textarea>
+    @if (blogForm.content().touched() && blogForm.content().invalid()) {
+      <ul class="errors">
+        @for (error of blogForm.content().errors(); track error.kind) {
+          <li>{{ error.message }}</li>
+        }
+      </ul>
+    }
+  </div>
+
+  <div class="field">
+    <label for="category">Kategorie</label>
+    <select id="category" [formField]="blogForm.category">
+      @for (category of categories; track category.value) {
+        <option [value]="category.value">{{ category.label }}</option>
+      }
+    </select>
+    @if (blogForm.category().touched() && blogForm.category().invalid()) {
+      <ul class="errors">
+        @for (error of blogForm.category().errors(); track error.kind) {
+          <li>{{ error.message }}</li>
+        }
+      </ul>
+    }
+  </div>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="blogForm().invalid()">
+    Blog-Beitrag erstellen
+  </button>
+</form>
