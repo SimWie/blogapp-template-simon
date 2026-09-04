@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { AuthStore } from '../../core/auth-store';
+import { BlogCreate } from '../blog-create/blog-create';
 
 /**
- * Platzhalter für die eigentliche Create-Blog-Seite -- das echte Formular ist
- * nicht Teil dieses Arbeitsblatts. Hier geht's nur darum, eine konkrete,
- * per canMatch geschützte Route zu haben, an der sich Guard + Rollen-Check
- * end-to-end testen lassen.
+ * Geschützte Route (canMatch: authGuard('user')) mit dem eigentlichen
+ * Blog-Erstellungsformular (BlogCreate, Signal Forms).
  */
 @Component({
   selector: 'app-add-blog-page',
+  imports: [BlogCreate],
   templateUrl: './add-blog-page.html',
   styleUrl: './add-blog-page.scss',
 })
