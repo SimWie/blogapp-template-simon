@@ -20,12 +20,12 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title in toolbar', async () => {
+  it('should render the sidebar', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('mat-toolbar')?.textContent).toContain(
-      'HFTM Web Applications (IN353)',
-    );
+    // Titel/Toolbar sitzen jetzt in der SidebarComponent, siehe
+    // sidebar.component.spec.ts -- App rendert nur noch <app-sidebar/>.
+    expect(compiled.querySelector('app-sidebar')).toBeTruthy();
   });
 });
