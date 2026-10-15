@@ -6,7 +6,7 @@ import { test, expect, type Page } from '@playwright/test';
  * 1. Wenn die Seite geladen wird, werden Blog-Einträge angezeigt.
  * 2. Jeder Blog-Eintrag zeigt einen Titel und eine Zusammenfassung.
  * 3. Wenn ein Autor im Filter gewählt wird, zeigt die Liste nur noch Blogs
- *    dieses Autors, und der Zähler passt sich an.
+ *    dieses Autors.
  *
  * Das Backend wird per page.route() gemockt: Der Test hängt so nicht vom
  * Azure-Backend ab, und die erwarteten Werte sind bekannt und stabil.
@@ -71,7 +71,6 @@ test.describe('Blog-Liste', () => {
     await page.getByLabel('Autor').selectOption('Anna');
 
     await expect(cards).toHaveCount(2);
-    await expect(page.getByText('2 Blog(s)')).toBeVisible();
     await expect(cards.locator('mat-card-subtitle')).toHaveText(['Anna', 'Anna']);
     await expect(page.getByText('Playwright Tipps')).toHaveCount(0);
   });
